@@ -1,0 +1,86 @@
+restaurant,food_item,prep_time
+Dominos,Margherita Pizza,15
+Dominos,Farmhouse Pizza,18
+Dominos,Peppy Paneer Pizza,17
+Dominos,Garlic Bread,10
+Dominos,Cheese Burst Pizza,20
+Dominos,Chicken Dominator,22
+
+Subway,Veg Sandwich,7
+Subway,Chicken Sandwich,10
+Subway,Paneer Tikka Sub,9
+Subway,Cheese Corn Sub,8
+Subway,Cold Coffee,5
+Subway,Salad Bowl,6
+
+Cafe,Coffee,5
+Cafe,Cappuccino,6
+Cafe,Latte,6
+Cafe,Burger,8
+Cafe,French Fries,7
+Cafe,Sandwich,6
+Cafe,Tea,4
+
+FoodCourt,Thali,12
+FoodCourt,Paneer Curry,15
+FoodCourt,Rice Bowl,10
+FoodCourt,Noodles,10
+FoodCourt,Fried Rice,11
+FoodCourt,Chapati Meal,9
+FoodCourt,Dal Rice,8
+
+CCD,Cappuccino,6
+CCD,Cold Coffee,7
+CCD,Espresso,5
+CCD,Brownie,6
+CCD,Sandwich,8
+CCD,Chocolate Shake,9
+
+MaggiePoint,Plain Maggie,6
+MaggiePoint,Cheese Maggie,8
+MaggiePoint,Masala Maggie,7
+MaggiePoint,Butter Maggie,9
+MaggiePoint,Tea,4
+MaggiePoint,Coffee,5
+
+JuiceCorner,Orange Juice,5
+JuiceCorner,Mango Shake,6
+JuiceCorner,Banana Shake,6
+JuiceCorner,Apple Juice,5
+JuiceCorner,Mixed Fruit Juice,7
+JuiceCorner,Protein Shake,8
+
+Bakery,Cake Slice,5
+Bakery,Pastry,4
+Bakery,Croissant,6
+Bakery,Donut,4
+Bakery,Muffin,5
+Bakery,Bread Roll,6
+
+BurgerPoint,Cheese Burger,10
+BurgerPoint,Chicken Burger,12
+BurgerPoint,Veg Burger,9
+BurgerPoint,French Fries,7
+BurgerPoint,Cold Drink,3
+BurgerPoint,Combo Meal,15
+
+PizzaHut,Paneer Pizza,18
+PizzaHut,Chicken Pizza,20
+PizzaHut,Garlic Bread,10
+PizzaHut,Stuffed Crust Pizza,22
+PizzaHut,Pasta,14
+PizzaHut,Coke,3
+
+SouthIndian,Dosa,8
+SouthIndian,Masala Dosa,10
+SouthIndian,Idli,6
+SouthIndian,Vada,6
+SouthIndian,Uttapam,9
+SouthIndian,Filter Coffee,5
+
+ChineseCorner,Hakka Noodles,10
+ChineseCorner,Manchurian,12
+ChineseCorner,Fried Rice,11
+ChineseCorner,Spring Roll,9
+ChineseCorner,Chilli Paneer,13
+ChineseCorner,Schezwan Rice,12

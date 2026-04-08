@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>QuickByte</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+padding:15px;
+background:#4facfe;
+color:white;
+}
+
+/* SEARCH */
+#search{
+margin:15px;
+padding:10px;
+width:250px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+padding:20px;
+}
+
+/* CARD */
+.card{
+background:white;
+border-radius:10px;
+cursor:pointer;
+text-align:center;
+padding:10px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:10px;
+}
+
+/* ⭐ RECOMMENDATION BOX */
+.recommend{
+background:white;
+margin:15px;
+padding:15px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* 🔥 GLOW */
+@keyframes glow {
+0% { box-shadow:0 0 5px rgba(0,0,0,0.2); }
+50% { box-shadow:0 0 20px currentColor; }
+100% { box-shadow:0 0 5px rgba(0,0,0,0.2); }
+}
+
+.glow{
+animation: glow 1.5s infinite;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+width:340px;
+border-radius:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<h2>🍽 QuickByte</h2>
+<a href="/dashboard" style="color:white;">📊 Dashboard</a>
+</div>
+
+<!-- ⭐ RECOMMENDATION -->
+<div class="recommend">
+<h3>⭐ Fastest Restaurant</h3>
+
+<p><b>{{best}}</b></p>
+<p>⏱ {{best_time}} mins</p>
+
+<p>Rush Level:</p>
+
+<div id="rushIndicator" style="
+display:inline-block;
+padding:8px 15px;
+border-radius:20px;
+color:white;
+font-weight:bold;
+background:green;
+transition:0.3s;
+">
+🟢 Low (Calm)
+</div>
+
+</div>
+
+<!-- SEARCH -->
+<input id="search" placeholder="Search restaurant..." onkeyup="searchRestaurant()">
+
+<!-- RESTAURANTS -->
+<div class="grid">
+{% for r in menu.keys() %}
+<div class="card" onclick="openModal('{{r}}')">
+
+<img src="{{ url_for('static', filename='restaurants/' + r + '.jpg') }}">
+
+<h3>{{r}}</h3>
+
+</div>
+{% endfor %}
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content">
+
+<h3 id="restaurantName"></h3>
+
+<form id="predictForm">
+
+<input type="hidden" name="restaurant" id="restaurantInput">
+
+<select name="food" id="foodDropdown"></select>
+
+<img id="foodImage"
+style="width:100%; height:120px; object-fit:cover; margin-top:10px; border-radius:10px;">
+
+<br><br>
+
+<input type="number" name="hour" min="1" max="12" placeholder="Hour" required>
+
+<select name="ampm">
+<option>AM</option>
+<option>PM</option>
+</select>
+
+<select name="day">
+<option value="0">Mon</option>
+<option value="1">Tue</option>
+<option value="2">Wed</option>
+<option value="3">Thu</option>
+<option value="4">Fri</option>
+<option value="5">Sat</option>
+<option value="6">Sun</option>
+</select>
+
+<br><br>
+
+<button type="submit">Predict</button>
+
+</form>
+
+<div id="resultBox" style="margin-top:10px;"></div>
+
+<br>
+<button onclick="closeModal()">Close</button>
+
+</div>
+</div>
+
+<script>
+
+// MENU DATA
+let menuData = {{menu|tojson}};
+
+// OPEN MODAL
+function openModal(r){
+
+document.getElementById("modal").classList.add("show");
+document.getElementById("restaurantName").innerText = r;
+document.getElementById("restaurantInput").value = r;
+
+let dropdown = document.getElementById("foodDropdown");
+dropdown.innerHTML = "";
+
+menuData[r].forEach(f=>{
+let option = document.createElement("option");
+option.value = f;
+option.text = f;
+dropdown.appendChild(option);
+});
+
+// show image
+showFoodImage(dropdown.value);
+}
+
+// CLOSE
+function closeModal(){
+document.getElementById("modal").classList.remove("show");
+}
+
+// SEARCH
+function searchRestaurant(){
+let input = document.getElementById("search").value.toLowerCase();
+let cards = document.getElementsByClassName("card");
+
+for(let i=0;i<cards.length;i++){
+cards[i].style.display =
+cards[i].innerText.toLowerCase().includes(input) ? "" : "none";
+}
+}
+
+// 🔥 IMAGE MATCHING
+function showFoodImage(food){
+
+let formats = [
+food+".jpg",
+food.toLowerCase()+".jpg",
+food.replace(/ /g,"_")+".jpg",
+food.toLowerCase().replace(/ /g,"_")+".jpg"
+];
+
+let img = document.getElementById("foodImage");
+let i = 0;
+
+function tryNext(){
+if(i >= formats.length){
+img.src = "/static/foods/default.jpg";
+return;
+}
+img.src = "/static/foods/" + formats[i];
+img.onerror = () => { i++; tryNext(); };
+}
+
+tryNext();
+}
+
+document.getElementById("foodDropdown").addEventListener("change", function(){
+showFoodImage(this.value);
+});
+
+// 🔥 PREDICT + ANIMATED INDICATOR
+document.getElementById("predictForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+fetch("/predict",{
+method:"POST",
+body:new FormData(this)
+})
+.then(r=>r.json())
+.then(d=>{
+
+document.getElementById("resultBox").innerHTML =
+`<b>Rush:</b> ${d.rush}<br><b>Wait:</b> ${d.wait} mins`;
+
+let rushEl = document.getElementById("rushIndicator");
+
+// reset glow
+rushEl.classList.remove("glow");
+
+// logic
+if(d.rush === "Low"){
+rushEl.innerText = "🟢 Low (Calm)";
+rushEl.style.background = "green";
+}
+
+else if(d.rush === "Medium"){
+rushEl.innerText = "🟡 Medium (Moderate)";
+rushEl.style.background = "orange";
+rushEl.classList.add("glow");
+}
+
+else if(d.rush === "High"){
+rushEl.innerText = "🔴 High (Busy)";
+rushEl.style.background = "red";
+rushEl.classList.add("glow");
+}
+
+});
+});
+
+</script>
+
+</body>
+</html>
